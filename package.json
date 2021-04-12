@@ -1,14 +1,28 @@
 {
-  "name": "@napi-rs/package-template",
+  "name": "@hnsjs/core",
   "version": "1.0.0",
-  "description": "Template project for writing node package with napi-rs",
+  "description": "Node.js http server framework powered by Hyper native binding. ",
   "main": "index.js",
-  "repository": "git@github.com:napi-rs/package-template.git",
+  "repository": "git@github.com:Brooooooklyn/hns.git",
   "license": "MIT",
-  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api"],
-  "files": ["index.d.ts", "index.js"],
+  "keywords": [
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "node-addon",
+    "node-addon-api",
+    "hyper",
+    "http",
+    "https",
+    "http2"
+  ],
+  "files": [
+    "index.d.ts",
+    "index.js"
+  ],
   "napi": {
-    "name": "package-template",
+    "name": "hns",
     "triples": {
       "defaults": true,
       "additional": [
@@ -30,7 +44,7 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "bench": "node -r ts-node/register/transpile-only benchmark/bench.ts",
+    "bench": "node -r @swc-node/register benchmark/bench.ts",
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
     "format": "run-p format:md format:json format:yaml format:source format:rs",
@@ -61,20 +75,34 @@
     "lint-staged": "^10.5.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "undici": "^4.0.0-alpha.2"
   },
   "dependencies": {
     "@node-rs/helper": "^1.1.0"
   },
   "lint-staged": {
-    "*.@(js|ts|tsx)": ["prettier --write", "eslint -c .eslintrc.yml --fix"],
-    "*.@(yml|yaml)": ["prettier --parser yaml --write"],
-    "*.md": ["prettier --parser markdown --write"],
-    "*.json": ["prettier --parser json --write"]
+    "*.@(js|ts|tsx)": [
+      "prettier --write",
+      "eslint -c .eslintrc.yml --fix"
+    ],
+    "*.@(yml|yaml)": [
+      "prettier --parser yaml --write"
+    ],
+    "*.md": [
+      "prettier --parser markdown --write"
+    ],
+    "*.json": [
+      "prettier --parser json --write"
+    ]
   },
   "ava": {
-    "require": ["@swc-node/register"],
-    "extensions": ["ts"],
+    "require": [
+      "@swc-node/register"
+    ],
+    "extensions": [
+      "ts"
+    ],
     "environmentVariables": {
       "TS_NODE_PROJECT": "./tsconfig.json"
     }

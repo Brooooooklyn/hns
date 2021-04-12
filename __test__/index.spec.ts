@@ -1,14 +1,13 @@
 import test from 'ava'
+// @ts-expect-error
+import { request } from 'undici'
 
-import { sleep, sync } from '../index'
+import { createApp } from '../index'
 
-test('sync function from native code', (t) => {
-  const fixture = 42
-  t.is(sync(fixture), fixture + 100)
-})
+const PORT = 3000
 
-test('sleep function from native code', async (t) => {
-  const timeToSleep = 200
-  const value = await sleep(timeToSleep)
-  t.is(value, timeToSleep * 2)
+test('should be able to create app', async (t) => {
+  createApp(PORT)
+  const { statusCode } = await request(`http://127.0.0.1:${PORT}`)
+  t.is(statusCode, 200)
 })

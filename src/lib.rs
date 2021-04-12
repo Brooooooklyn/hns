@@ -3,9 +3,11 @@
 #[macro_use]
 extern crate napi_derive;
 
-use std::convert::TryInto;
+use std::convert::{Infallible, TryInto};
 
-use napi::{CallContext, Env, JsNumber, JsObject, Result, Task};
+use hyper::service::{make_service_fn, service_fn};
+use hyper::{Body, Request, Response, Server};
+use napi::{CallContext, Error as NapiError, JsNumber, JsObject, Result as JsResult, Status};
 
 #[cfg(all(
   unix,
@@ -21,43 +23,35 @@ static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 #[global_allocator]
 static ALLOC: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
-struct AsyncTask(u32);
-
-impl Task for AsyncTask {
-  type Output = u32;
-  type JsValue = JsNumber;
-
-  fn compute(&mut self) -> Result<Self::Output> {
-    use std::thread::sleep;
-    use std::time::Duration;
-    sleep(Duration::from_millis(self.0 as u64));
-    Ok(self.0 * 2)
-  }
-
-  fn resolve(self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
-    env.create_uint32(output)
-  }
-}
-
 #[module_exports]
-fn init(mut exports: JsObject) -> Result<()> {
-  exports.create_named_method("sync", sync_fn)?;
-
-  exports.create_named_method("sleep", sleep)?;
+fn init(mut exports: JsObject) -> JsResult<()> {
+  exports.create_named_method("createApp", create_app)?;
   Ok(())
 }
 
 #[js_function(1)]
-fn sync_fn(ctx: CallContext) -> Result<JsNumber> {
-  let argument: u32 = ctx.get::<JsNumber>(0)?.try_into()?;
+fn create_app(ctx: CallContext) -> JsResult<JsObject> {
+  let port: u32 = ctx.get::<JsNumber>(0)?.try_into()?;
+  let start = async move {
+    let addr = ([127, 0, 0, 1], port as _).into();
+    let make_svc = make_service_fn(|_conn| {
+      // This is the `Service` that will handle the connection.
+      // `service_fn` is a helper to convert a function that
+      // returns a Response into a `Service`.
+      async { Ok::<_, Infallible>(service_fn(hello)) }
+    });
+    let server = Server::bind(&addr).serve(make_svc);
+    server
+      .await
+      .map_err(|e| NapiError::new(Status::GenericFailure, format!("{}", e)))?;
 
-  ctx.env.create_uint32(argument + 100)
+    Ok(())
+  };
+  ctx
+    .env
+    .execute_tokio_future(start, |env, _| env.get_undefined())
 }
 
-#[js_function(1)]
-fn sleep(ctx: CallContext) -> Result<JsObject> {
-  let argument: u32 = ctx.get::<JsNumber>(0)?.try_into()?;
-  let task = AsyncTask(argument);
-  let async_task = ctx.env.spawn(task)?;
-  Ok(async_task.promise_object())
+async fn hello(_: Request<Body>) -> Result<Response<Body>, Infallible> {
+  Ok(Response::new(Body::from("Hello!")))
 }

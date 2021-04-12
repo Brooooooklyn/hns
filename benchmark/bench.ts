@@ -1,21 +1,37 @@
+import { createServer } from 'http'
+ 
 import b from 'benny'
 
-import { sync } from '../index'
+import { createApp } from '../index'
 
-function add(a: number) {
-  return a + 100
+const PORT = 3000
+
+async function createHttpServer() {
+  return new Promise<void>((resolve, reject) => {
+    const server = createServer()
+    server.listen(PORT, () => {
+      server.close((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    }).addListener('error', (err) => { reject(err) })
+  })
 }
 
 async function run() {
   await b.suite(
-    'Add 100',
+    'Listen',
 
-    b.add('Native a + 100', () => {
-      sync(10)
+    b.add('Node.js http', async () => {
+      await createHttpServer()
+
     }),
 
-    b.add('JavaScript a + 100', () => {
-      add(10)
+    b.add('hns createApp', async () => {
+      await createApp(PORT)
     }),
 
     b.cycle(),
