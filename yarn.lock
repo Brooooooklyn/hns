@@ -3588,10 +3588,10 @@ unbox-primitive@^1.0.0:
     has-symbols "^1.0.2"
     which-boxed-primitive "^1.0.2"
 
-undici@^4.0.0-alpha.2:
-  version "4.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-4.0.0-alpha.2.tgz#5aec99c938961acc1c460db3aeeeea7bfb6f3bf0"
-  integrity sha512-pORlPCa6WHSHgYF3h3T5ZbGDwj8Rt+np7GQyppSZSt7Q1BMPVzp3484PcJyqCyx3HmtafMXdg7MkT+w8CnI99Q==
+undici@^4.0.0-alpha.4:
+  version "4.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-4.0.0-alpha.4.tgz#564442eeaa22e69ae085e097d55a2bcadb53eb7a"
+  integrity sha512-6dgCWrNiwYtw33Sv5jkfglFdAW84K5aOo+njsZnHciDito024RsWcvdw6lg9hIJ8VeObHiUvlHLhvp5kK0um6A==
 
 unique-string@^2.0.0:
   version "2.0.0"
