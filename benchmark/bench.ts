@@ -1,42 +1,37 @@
+import { execSync } from 'child_process'
 import { createServer } from 'http'
- 
-import b from 'benny'
 
 import { createApp } from '../index'
 
 const PORT = 3000
 
-async function createHttpServer() {
+function createHttpServer() {
   return new Promise<void>((resolve, reject) => {
-    const server = createServer()
-    server.listen(PORT, () => {
-      server.close((err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
+    const server = createServer((req, res) => {
+      if (req.url === '/favicon.ico') return
+      if (req.url === '/') return res.end('Hello!')
+    })
+    server
+      .listen(PORT, 'localhost')
+      .on('listening', () => {
+        resolve()
       })
-    }).addListener('error', (err) => { reject(err) })
+      .on('error', (err) => {
+        reject(err)
+      })
   })
 }
 
 async function run() {
-  await b.suite(
-    'Listen',
-
-    b.add('Node.js http', async () => {
-      await createHttpServer()
-
-    }),
-
-    b.add('hns createApp', async () => {
-      await createApp(PORT)
-    }),
-
-    b.cycle(),
-    b.complete(),
-  )
+  await createHttpServer()
+  await createApp(PORT + 1)
+  execSync(`npx autocannon -c 8 -w 4 -d 30 http://localhost:${PORT}`, {
+    stdio: 'inherit',
+  })
+  execSync(`npx autocannon -c 8 -w 4 -d 30 http://localhost:${PORT + 1}`, {
+    stdio: 'inherit',
+  })
+  process.exit(0)
 }
 
 run().catch((e) => {

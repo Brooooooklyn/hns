@@ -20,7 +20,7 @@ tokio = {version = "1", features = [
   "io-std",
   "io-util",
   "rt",
-  "rt-multi-thread", # so examples can use #[tokio::main]
+  "rt-multi-thread",
   "sync",
   "time",
   "test-util",
@@ -36,4 +36,4 @@ mimalloc = {version = "0.1"}
 napi-build = "1"
 
 [profile.release]
-lto = true
+# lto = true
