@@ -3,7 +3,7 @@ const http = require('http')
 const numCPUs = require('os').cpus().length
 
 if (cluster.isMaster) {
-  console.log(`Master ${process.pid} is running`)
+  console.info(`Master ${process.pid} is running`)
 
   // Fork workers.
   for (let i = 0; i < numCPUs; i++) {
@@ -11,7 +11,7 @@ if (cluster.isMaster) {
   }
 
   cluster.on('exit', (worker) => {
-    console.log(`worker ${worker.process.pid} died`)
+    console.info(`worker ${worker.process.pid} died`)
   })
 } else {
   // Workers can share any TCP connection
@@ -23,5 +23,5 @@ if (cluster.isMaster) {
     })
     .listen(3000)
 
-  console.log(`Worker ${process.pid} started`)
+  console.info(`Worker ${process.pid} started`)
 }

@@ -1,4 +1,4 @@
-import { execSync } from 'child_process'
+import { exec } from 'child_process'
 import { createServer } from 'http'
 
 import { createApp } from '../index'
@@ -25,13 +25,23 @@ function createHttpServer() {
 async function run() {
   await createHttpServer()
   await createApp(PORT + 1)
-  execSync(`npx autocannon -c 8 -w 4 -d 30 http://localhost:${PORT}`, {
-    stdio: 'inherit',
-  })
-  execSync(`npx autocannon -c 8 -w 4 -d 30 http://localhost:${PORT + 1}`, {
-    stdio: 'inherit',
-  })
+  await wrk(PORT)
+  await wrk(PORT + 1)
   process.exit(0)
+}
+
+function wrk(port: number) {
+  return new Promise<void>((resolve, reject) => {
+    exec(`npx autocannon -c 8 -w 4 -d 30 http://localhost:${port}`, (err, stdout, stderr) => {
+      if (err) {
+        reject(err)
+      } else {
+        console.info(stdout)
+        console.info(stderr)
+        resolve()
+      }
+    })
+  })
 }
 
 run().catch((e) => {
