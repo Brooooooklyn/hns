@@ -16,7 +16,6 @@ yarn add @hnsjs/core
 |                  | node12 | node14 | node16 |
 | ---------------- | ------ | ------ | ------ |
 | Windows x64      | ✓      | ✓      | ✓      |
-| Windows x32      | ✓      | ✓      | ✓      |
 | Windows arm64    | ✓      | ✓      | ✓      |
 | macOS x64        | ✓      | ✓      | ✓      |
 | macOS arm64      | ✓      | ✓      | ✓      |
