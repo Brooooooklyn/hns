@@ -1,12 +1,12 @@
 {
-  "name": "@napi-rs/package-template-android-arm64",
+  "name": "@hnsjs/core-android-arm64",
   "version": "1.0.0",
   "os": ["android"],
   "cpu": ["arm64"],
-  "main": "package-template.android-arm64.node",
-  "files": ["package-template.android-arm64.node"],
-  "description": "Template project for writing node package with napi-rs",
-  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api"],
+  "main": "hns.android-arm64.node",
+  "files": ["hns.android-arm64.node"],
+  "description": "Node.js http server framework powered by Hyper native binding. ",
+  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api", "hyper", "http", "https", "http2"],
   "license": "MIT",
   "engines": {
     "node": ">= 10"
@@ -15,5 +15,5 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "git@github.com:napi-rs/package-template.git"
+  "repository": "git@github.com:Brooooooklyn/hns.git"
 }

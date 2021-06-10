@@ -27,9 +27,16 @@ export interface HttpRequest {
   method: Method
   uri: string
   headers: Record<string, string>
+  body: RequestBody
 }
 
+export interface RequestBody {}
+
 export interface HttpResponse {}
+
+type BodyExternal = {
+  __type: 'native:external:body'
+}
 
 export function createApp(port: number, onRequest?: (req: HttpRequest) => Promise<HttpResponse> | HttpResponse) {
   return new Promise<void>((resolve, reject) => {
@@ -42,7 +49,7 @@ export function createApp(port: number, onRequest?: (req: HttpRequest) => Promis
           resolve()
         }
       },
-      (err: Error | null, version: Version, method: Method, uri: string, headers: string) => {
+      (err: Error | null, version: Version, method: Method, uri: string, headers: string, body: BodyExternal) => {
         if (err) {
           console.error(err)
         }
@@ -51,6 +58,7 @@ export function createApp(port: number, onRequest?: (req: HttpRequest) => Promis
           method,
           uri,
           headers: JSON.parse(headers),
+          body,
         }
         if (onRequest) {
           Promise.resolve(onRequest(req)).catch((e) => {

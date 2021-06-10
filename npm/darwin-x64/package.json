@@ -1,12 +1,12 @@
 {
-  "name": "@napi-rs/package-template-darwin-x64",
+  "name": "@hnsjs/core-darwin-x64",
   "version": "1.0.0",
   "os": ["darwin"],
   "cpu": ["x64"],
-  "main": "package-template.darwin-x64.node",
-  "files": ["package-template.darwin-x64.node"],
-  "description": "Template project for writing node package with napi-rs",
-  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api"],
+  "main": "hns.darwin-x64.node",
+  "files": ["hns.darwin-x64.node"],
+  "description": "Node.js http server framework powered by Hyper native binding. ",
+  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api", "hyper", "http", "https", "http2"],
   "license": "MIT",
   "engines": {
     "node": ">= 10"
@@ -15,5 +15,5 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "git@github.com:napi-rs/package-template.git"
+  "repository": "git@github.com:Brooooooklyn/hns.git"
 }

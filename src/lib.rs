@@ -5,7 +5,7 @@ extern crate napi_derive;
 
 use std::convert::{Infallible, TryInto};
 
-use http::request::Parts;
+use hyper::body::HttpBody;
 use hyper::service::{make_service_fn, service_fn};
 use hyper::{Body, Request, Response, Server};
 use napi::{
@@ -15,16 +15,10 @@ use napi::{
 };
 
 #[cfg(all(
-  unix,
+  target_arch = "x86_64",
   not(target_env = "musl"),
-  not(target_arch = "aarch64"),
-  not(target_arch = "arm"),
   not(debug_assertions)
 ))]
-#[global_allocator]
-static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
-
-#[cfg(all(windows, target_arch = "x86_64", not(debug_assertions)))]
 #[global_allocator]
 static ALLOC: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
@@ -49,17 +43,20 @@ fn create_app(ctx: CallContext) -> JsResult<JsObject> {
   let req_tsfn_callback = ctx.env.create_threadsafe_function(
     &on_req_callback,
     1,
-    |cx: napi::threadsafe_function::ThreadSafeCallContext<Parts>| {
-      let parts = cx.value;
+    |cx: napi::threadsafe_function::ThreadSafeCallContext<Request<Body>>| {
+      let (parts, body) = cx.value.into_parts();
       let version = format!("{:?}", &parts.version);
       let method = parts.method.as_str();
       let uri = format!("{}", &parts.uri);
       let headers = format!("{:?}", &parts.headers);
+      let body_size_hint = body.size_hint().upper().map(|s| s as i64);
+      let body = cx.env.create_external(body, body_size_hint)?;
       Ok(vec![
-        cx.env.create_string(&version)?,
-        cx.env.create_string(method)?,
-        cx.env.create_string(&uri)?,
-        cx.env.create_string(&headers)?,
+        cx.env.create_string(&version)?.into_unknown(),
+        cx.env.create_string(method)?.into_unknown(),
+        cx.env.create_string(&uri)?.into_unknown(),
+        cx.env.create_string(&headers)?.into_unknown(),
+        body.into_unknown(),
       ])
     },
   )?;
@@ -100,9 +97,9 @@ fn create_app(ctx: CallContext) -> JsResult<JsObject> {
 #[inline(always)]
 async fn on_req(
   req: Request<Body>,
-  callback: ThreadsafeFunction<Parts>,
+  callback: ThreadsafeFunction<Request<Body>>,
 ) -> Result<Response<Body>, Infallible> {
-  let (parts, _body) = req.into_parts();
-  callback.call(Ok(parts), ThreadsafeFunctionCallMode::NonBlocking);
+  callback.call(Ok(req), ThreadsafeFunctionCallMode::NonBlocking);
+
   Ok(Response::new(Body::from("Hello!")))
 }
