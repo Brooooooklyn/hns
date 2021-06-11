@@ -1,0 +1,19 @@
+{
+  "name": "@hnsjs/core-freebsd-x64",
+  "version": "1.0.0",
+  "os": ["freebsd"],
+  "cpu": ["x64"],
+  "main": "hns.freebsd-x64.node",
+  "files": ["hns.freebsd-x64.node"],
+  "description": "Node.js http server framework powered by Hyper native binding. ",
+  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api", "hyper", "http", "https", "http2"],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": "git@github.com:Brooooooklyn/hns.git"
+}

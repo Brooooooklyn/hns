@@ -12,7 +12,6 @@ yarn add @hnsjs/core
 
 ## Support matrix
 
-
 |                  | node12 | node14 | node16 |
 | ---------------- | ------ | ------ | ------ |
 | Windows x64      | ✓      | ✓      | ✓      |
