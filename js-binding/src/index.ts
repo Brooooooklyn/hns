@@ -1,6 +1,8 @@
+import { join } from 'path'
+
 import { loadBinding } from '@node-rs/helper'
 
-const { createApp: createNativeApp } = loadBinding(__dirname, 'hns', '@hnsjs/core')
+const { createApp: createNativeApp } = loadBinding(join(__dirname, '..', '..'), 'hns', '@hnsjs/core')
 
 export const enum Version {
   HTTP_09 = 'HTTP/0.9',

@@ -1,7 +1,7 @@
 import { exec } from 'child_process'
 import { createServer } from 'http'
 
-import { createApp } from '../index'
+import { createApp } from '@hnsjs/core'
 
 const PORT = 3000
 

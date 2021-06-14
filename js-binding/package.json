@@ -1,0 +1,29 @@
+{
+  "name": "@hnsjs/core",
+  "version": "1.0.0",
+  "description": "Node.js http server framework powered by Hyper native binding. ",
+  "main": "./lib/index.js",
+  "repository": "git@github.com:Brooooooklyn/hns.git",
+  "license": "MIT",
+  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "Node-API", "node-addon", "node-addon-api", "hyper", "http", "https", "http2", "quic", "http3"],
+  "files": ["lib", "src"],
+  "types": "./src/index.ts",
+  "engines": {
+    "node": ">= 10"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "scripts": {
+    "prepublishOnly": "napi prepublish",
+    "version": "napi version"
+  },
+  "dependencies": {
+    "@node-rs/helper": "^1.2.0"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Brooooooklyn"
+  }
+}

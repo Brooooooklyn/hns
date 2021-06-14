@@ -1,12 +1,14 @@
-const cluster = require('cluster')
-const http = require('http')
-const numCPUs = require('os').cpus().length
+import cluster from 'cluster'
+import http from 'http'
+import { cpus } from 'os'
+
+const CPU_CORES = cpus().length
 
 if (cluster.isMaster) {
   console.info(`Master ${process.pid} is running`)
 
   // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
+  for (let i = 0; i < CPU_CORES; i++) {
     cluster.fork()
   }
 

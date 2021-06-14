@@ -1,0 +1,37 @@
+[package]
+authors = ["LongYinan <lynweklm@gmail.com>"]
+edition = "2018"
+name = "hns"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+futures = "0.3"
+http = "0.2"
+hyper = {version = "0.14", features = ["tcp", "http1", "http2", "server", "stream"]}
+napi = {version = "1", features = ["tokio_rt", "serde-json"]}
+napi-derive = "1"
+serde = "1"
+serde_derive = "1"
+serde_json = "1"
+tokio = {version = "1", features = [
+  "fs",
+  "macros",
+  "io-std",
+  "io-util",
+  "rt",
+  "rt-multi-thread",
+  "sync",
+  "time",
+  "test-util",
+]}
+
+[target.'cfg(all(target_arch = "x86_64", not(target_env = "musl")))'.dependencies]
+mimalloc = {version = "0.1"}
+
+[build-dependencies]
+napi-build = "1"

@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "bench",
+  "version": "0.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "LongYinan",
+    "email": "lynweklm@gmail.com",
+    "url": "https://lynvv.xyz"
+  },
+  "dependencies": {
+    "@hnsjs/core": "^1.0.0",
+    "autocannon": "^7.3.0"
+  }
+}
