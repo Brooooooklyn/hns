@@ -1,12 +1,28 @@
 {
-  "name": "@hnsjs/core",
+  "name": "hns",
   "version": "1.0.0",
   "description": "Node.js http server framework powered by Hyper native binding. ",
-  "main": "index.js",
   "repository": "git@github.com:Brooooooklyn/hns.git",
   "license": "MIT",
-  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api", "hyper", "http", "https", "http2"],
-  "files": ["index.d.ts", "index.js"],
+  "private": true,
+  "keywords": [
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "Node-API",
+    "node-addon",
+    "node-addon-api",
+    "hyper",
+    "http",
+    "https",
+    "http2",
+    "quic",
+    "http3"
+  ],
+  "files": [
+    "js-binding"
+  ],
   "napi": {
     "name": "hns",
     "triples": {
@@ -33,8 +49,9 @@
   "scripts": {
     "artifacts": "napi artifacts",
     "bench": "node -r @swc-node/register benchmark/bench.ts",
-    "build": "napi build --platform --release",
-    "build:debug": "napi build --platform",
+    "build": "napi build --platform --release --cargo-name hns",
+    "build:ts": "tsc -b tsconfig.project.json",
+    "build:debug": "napi build --platform --cargo-name hns",
     "format": "run-p format:md format:json format:yaml format:source format:rs",
     "format:md": "prettier --parser markdown --write ./**/*.md",
     "format:json": "prettier --parser json --write ./**/*.json",
@@ -67,18 +84,28 @@
     "typescript": "^4.3.2",
     "undici": "^4.0.0-alpha.2"
   },
-  "dependencies": {
-    "@node-rs/helper": "^1.2.0"
-  },
   "lint-staged": {
-    "*.@(js|ts|tsx)": ["prettier --write", "eslint -c .eslintrc.yml --fix"],
-    "*.@(yml|yaml)": ["prettier --parser yaml --write"],
-    "*.md": ["prettier --parser markdown --write"],
-    "*.json": ["prettier --parser json --write"]
+    "*.@(js|ts|tsx)": [
+      "prettier --write",
+      "eslint -c .eslintrc.yml --fix"
+    ],
+    "*.@(yml|yaml)": [
+      "prettier --parser yaml --write"
+    ],
+    "*.md": [
+      "prettier --parser markdown --write"
+    ],
+    "*.json": [
+      "prettier --parser json --write"
+    ]
   },
   "ava": {
-    "require": ["@swc-node/register"],
-    "extensions": ["ts"],
+    "require": [
+      "@swc-node/register"
+    ],
+    "extensions": [
+      "ts"
+    ],
     "environmentVariables": {
       "TS_NODE_PROJECT": "./tsconfig.json"
     }
