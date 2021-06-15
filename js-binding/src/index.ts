@@ -2,43 +2,17 @@ import { join } from 'path'
 
 import { loadBinding } from '@node-rs/helper'
 
-const { createApp: createNativeApp } = loadBinding(join(__dirname, '..', '..'), 'hns', '@hnsjs/core')
+import { Method, Version } from './const'
+import { HttpRequest, BodyExternal } from './request'
 
-export const enum Version {
-  HTTP_09 = 'HTTP/0.9',
-  HTTP_10 = 'HTTP/1.0',
-  HTTP_1_1 = 'HTTP/1.1',
-  H2 = 'HTTP/2.0',
-  H3 = 'HTTP/3.0',
-}
-
-export const enum Method {
-  Options = 'OPTIONS',
-  Get = 'GET',
-  Post = 'POST',
-  Put = 'PUT',
-  Delete = 'DELETE',
-  Head = 'HEAD',
-  Trace = 'TRACE',
-  Connect = 'CONNECT',
-  Patch = 'PATCH',
-}
-
-export interface HttpRequest {
-  version: Version
-  method: Method
-  uri: string
-  headers: Record<string, string>
-  body: RequestBody
-}
-
-export interface RequestBody {}
+const {
+  createApp: createNativeApp,
+  getBodyText,
+  getBodyBinary,
+  getBodyJson,
+} = loadBinding(join(__dirname, '..', '..'), 'hns', '@hnsjs/core')
 
 export interface HttpResponse {}
-
-type BodyExternal = {
-  __type: 'native:external:body'
-}
 
 export function createApp(port: number, onRequest?: (req: HttpRequest) => Promise<HttpResponse> | HttpResponse) {
   return new Promise<void>((resolve, reject) => {
@@ -60,7 +34,17 @@ export function createApp(port: number, onRequest?: (req: HttpRequest) => Promis
           method,
           uri,
           headers: JSON.parse(headers),
-          body,
+          body: {
+            text() {
+              return getBodyText(body)
+            },
+            binary() {
+              return getBodyBinary(body)
+            },
+            json() {
+              return getBodyJson(body)
+            },
+          },
         }
         if (onRequest) {
           Promise.resolve(onRequest(req)).catch((e) => {

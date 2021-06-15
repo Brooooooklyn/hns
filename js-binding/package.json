@@ -5,7 +5,21 @@
   "main": "./lib/index.js",
   "repository": "git@github.com:Brooooooklyn/hns.git",
   "license": "MIT",
-  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "Node-API", "node-addon", "node-addon-api", "hyper", "http", "https", "http2", "quic", "http3"],
+  "keywords": [
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "Node-API",
+    "node-addon",
+    "node-addon-api",
+    "hyper",
+    "http",
+    "https",
+    "http2",
+    "quic",
+    "http3"
+  ],
   "files": ["lib", "src"],
   "types": "./src/index.ts",
   "engines": {

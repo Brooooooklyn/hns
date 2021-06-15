@@ -20,9 +20,7 @@
     "quic",
     "http3"
   ],
-  "files": [
-    "js-binding"
-  ],
+  "files": ["js-binding"],
   "napi": {
     "name": "hns",
     "triples": {
@@ -85,27 +83,14 @@
     "undici": "^4.0.0-alpha.2"
   },
   "lint-staged": {
-    "*.@(js|ts|tsx)": [
-      "prettier --write",
-      "eslint -c .eslintrc.yml --fix"
-    ],
-    "*.@(yml|yaml)": [
-      "prettier --parser yaml --write"
-    ],
-    "*.md": [
-      "prettier --parser markdown --write"
-    ],
-    "*.json": [
-      "prettier --parser json --write"
-    ]
+    "*.@(js|ts|tsx)": ["prettier --write", "eslint -c .eslintrc.yml --fix"],
+    "*.@(yml|yaml)": ["prettier --parser yaml --write"],
+    "*.md": ["prettier --parser markdown --write"],
+    "*.json": ["prettier --parser json --write"]
   },
   "ava": {
-    "require": [
-      "@swc-node/register"
-    ],
-    "extensions": [
-      "ts"
-    ],
+    "require": ["@swc-node/register"],
+    "extensions": ["ts"],
     "environmentVariables": {
       "TS_NODE_PROJECT": "./tsconfig.json"
     }
